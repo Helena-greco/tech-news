@@ -1,7 +1,6 @@
 import time
 import requests
 from parsel import Selector
-import re
 
 
 # Requisito 1
@@ -44,7 +43,8 @@ def scrape_noticia(html_content):
     news["comments_count"] = 0
     # sel.xpath("string(//a[1])").getall() # convert it to string
     # Ref: https://docs.scrapy.org/en/latest/topics/selectors.html
-    news["summary"] = selector.xpath("string(//div[@class='entry-content']/p)").get()
+    paragraph = selector.xpath("string(//div[@class='entry-content']/p)").get()
+    news["summary"] = paragraph
     news["tags"] = selector.css("[rel='tag']::text").getall()
     news["category"] = selector.css(".category-style .label::text").get()
 

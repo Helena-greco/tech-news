@@ -1,6 +1,7 @@
 import time
 import requests
 from parsel import Selector
+import re
 
 
 # Requisito 1
@@ -33,7 +34,21 @@ def scrape_next_page_link(html_content):
 
 # Requisito 4
 def scrape_noticia(html_content):
-    """Seu código deve vir aqui"""
+    selector = Selector(html_content)
+    news = dict()
+
+    news["url"] = selector.css("[rel='canonical']::attr(href)").get()
+    news["title"] = selector.css("h1.entry-title::text").get()
+    news["timestamp"] = selector.css("li.meta-date::text").get()
+    news["writer"] = selector.css("a.url.fn.n::text").get()
+    news["comments_count"] = 0
+    # sel.xpath("string(//a[1])").getall() # convert it to string
+    # Ref: https://docs.scrapy.org/en/latest/topics/selectors.html
+    news["summary"] = selector.xpath("string(//div[@class='entry-content']/p)").get()
+    news["tags"] = selector.css("[rel='tag']::text").getall()
+    news["category"] = selector.css(".category-style .label::text").get()
+
+    return news
 
 
 # Requisito 5

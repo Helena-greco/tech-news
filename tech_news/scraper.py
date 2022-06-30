@@ -1,6 +1,7 @@
 import time
 import requests
 from parsel import Selector
+from tech_news.database import create_news
 
 
 # Requisito 1
@@ -53,4 +54,21 @@ def scrape_noticia(html_content):
 
 # Requisito 5
 def get_tech_news(amount):
-    """Seu código deve vir aqui"""
+    URL = fetch("https://blog.betrybe.com")
+    links = scrape_novidades(URL)
+    news_list = list()
+
+    while len(links) < amount:
+        next_link = next_page(URL)
+        URL = fetch(next_link)
+        links.extend(scrape_novidades(URL))
+
+    for link in links[:amount]:
+        page = fetch(link)
+        page_content = scrape_noticia(page)
+        news_list.append(page_content)
+
+    create_news(news_list)
+    return news_list
+
+# Ref: https://www.w3schools.com/python/ref_list_extend.asp

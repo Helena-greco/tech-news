@@ -1,8 +1,9 @@
 from tech_news.database import find_news
 
 
-# Ref: https://stackoverflow.com/questions/8966538/syntax-behind-sortedkey-lambda
-# Ref: https://www.programiz.com/python-programming/methods/built-in/sorted
+# Refs: 
+# https://stackoverflow.com/questions/8966538/syntax-behind-sortedkey-lambda
+# https://www.programiz.com/python-programming/methods/built-in/sorted
 # Requisito 10
 def top_5_news():
     all_news = find_news()

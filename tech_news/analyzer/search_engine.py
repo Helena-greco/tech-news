@@ -1,6 +1,16 @@
+from tech_news.database import search_news
+
+
+# Ref: https://www.mongodb.com/docs/manual/reference/operator/query/regex/
 # Requisito 6
 def search_by_title(title):
-    """Seu código deve vir aqui"""
+    titles = search_news(
+        {"title": {"$regex": title, "$options": "i"}}
+    )
+    news_list = list()
+    for news in titles:
+        news_list.append((news["title"], news["url"]))
+    return news_list
 
 
 # Requisito 7
